@@ -4,66 +4,86 @@ from PIL import Image, ImageTk
 
 
 class CreateBoard:
+    """
+    Class for the creating the visuals of the chess board along with
+    placing the pieces and recording their starting positions
+
+    Attributes:
+        board (tkinter button): 2d array of tkinter buttons used for interacting with the board
+        pieces_placement (str): 2d array of strings used for checking the location of each piece on the board
+        current_piece (tuple): tuple containing the coordinates of the currently clicked piece
+        b_bishop (image): Image containing the black bishop image
+        b_king (image): Image containing the black king image
+        b_knight (image): Image containing the black knight image
+        b_pawn (image): Image containing the black pawn image
+        b_queen (image): Image containing the black queen image
+        b_rook (image): Image containing the black rook image
+        w_bishop (image): Image containing the white bishop image
+        w_king (image): Image containing the white king image
+        w_knight (image): Image containing the white knight image
+        w_pawn (image): Image containing the white pawn image
+        w_queen (image): Image containing the white queen image
+        w_rook (image): Image containing the white rook image
+
+    Methods:
+        create_image(path: str, width: int, length: int) --> ImageTk
+            Opens and resizes images
+        clicked_piece(row: int, length: int) --> tuple
+            Stores the location of the clicked piece
+        make_board() --> None
+            Creates the board and stores the button as tiles in a 2d array
+        place_pieces() --> None
+            Places the pieces on the board by putting images on the starting tiles and storing
+            their locations in a 2d array
+    """
+
     def __init__(self):
+        """
+        Initializer for CreateBoard variables
+        """
         self.board = [[0 for x in range(0, 8)] for y in range(0, 8)]
         self.pieces_placement = [["" for x in range(0, 8)] for y in range(0, 8)]
 
         self.current_piece = None
 
-        # Black Bishop Image
-        self.b_bishop_image = Image.open("Pieces/b_bishop_png_128px.png")
-        self.b_bishop = self.resize_image(self.b_bishop_image, 70, 60)
+        self.b_bishop = self.create_image("Pieces/b_bishop_png_128px.png", 70, 60) # Black Bishop Image
+        self.b_king = self.create_image("Pieces/b_king_png_128px.png", 70, 60) # Black King Image
+        self.b_knight = self.create_image("Pieces/b_knight_png_128px.png", 70, 60) # Black Knight Image
+        self.b_pawn = self.create_image("Pieces/b_pawn_png_128px.png", 70, 60) # Black Pawn Image
+        self.b_queen = self.create_image("Pieces/b_queen_png_128px.png", 70, 60) # Black Queen Image
+        self.b_rook = self.create_image("Pieces/b_rook_png_128px.png", 70, 60) # Black Rook Image
 
-        # Black King Image
-        self.b_king_image = Image.open("Pieces/b_king_png_128px.png")
-        self.b_king = self.resize_image(self.b_king_image, 70, 60)
+        self.w_bishop = self.create_image("Pieces/w_bishop_png_128px.png", 70, 60) # White Bishop Image
+        self.w_king = self.create_image("Pieces/w_king_png_128px.png", 70, 60) # White King Image
+        self.w_knight = self.create_image("Pieces/w_knight_png_128px.png", 70, 60) # White Knight Image
+        self.w_pawn = self.create_image("Pieces/w_pawn_png_128px.png", 70, 60) # White Pawn Image
+        self.w_queen = self.create_image("Pieces/w_queen_png_128px.png", 70, 60) # White Queen Image
+        self.w_rook = self.create_image( "Pieces/w_rook_png_128px.png", 70, 60) # White Rook Image
 
-        # Black Knight Image
-        self.b_knight_image = Image.open("Pieces/b_knight_png_128px.png")
-        self.b_knight = self.resize_image(self.b_knight_image, 70, 60)
+    def create_image(self, path: str, width: int, length: int):
+        """
+        Loading and Resizing Images
 
-        # Black Pawn Image
-        self.b_pawn_image = Image.open("Pieces/b_pawn_png_128px.png")
-        self.b_pawn = self.resize_image(self.b_pawn_image, 70, 60)
+        :param path: Path to image file
+        :param width: Desired width in pixels of image
+        :param length: Desired length in pixels of image
 
-        # Black Queen Image
-        self.b_queen_image = Image.open("Pieces/b_queen_png_128px.png")
-        self.b_queen = self.resize_image(self.b_queen_image, 70, 60)
+        :return: The resized image
+        """
+        path = Image.open(path)
+        path = path.resize((width, length), Image.LANCZOS)
+        return ImageTk.PhotoImage(path)
 
-        # Black Rook Image
-        self.b_rook_image = Image.open("Pieces/b_rook_png_128px.png")
-        self.b_rook = self.resize_image(self.b_rook_image, 70, 60)
+    def clicked_piece(self, row: int, column: int):
+        """
+        Saves the location of the clicked piece
 
-        #White Bishop Image
-        self.w_bishop_image = Image.open("Pieces/w_bishop_png_128px.png")
-        self.w_bishop = self.resize_image(self.w_bishop_image, 70, 60)
+        :param row: the location of the piece on its row
+        :param column: the location of the piece on its column
 
-        # White King Image
-        self.w_king_image = Image.open("Pieces/w_king_png_128px.png")
-        self.w_king = self.resize_image(self.w_king_image, 70, 60)
-
-        # White Knight Image
-        self.w_knight_image = Image.open("Pieces/w_knight_png_128px.png")
-        self.w_knight = self.resize_image(self.w_knight_image, 70, 60)
-
-        # White Pawn Image
-        self.w_pawn_image = Image.open("Pieces/w_pawn_png_128px.png")
-        self.w_pawn = self.resize_image(self.w_pawn_image, 70, 60)
-
-        # White Queen Image
-        self.w_queen_image = Image.open("Pieces/w_queen_png_128px.png")
-        self.w_queen = self.resize_image(self.w_queen_image, 70, 60)
-
-        # White Rook Image
-        self.w_rook_image = Image.open("Pieces/w_rook_png_128px.png")
-        self.w_rook = self.resize_image(self.w_rook_image, 70, 60)
-
-    def resize_image(self, image, width, length):
-        image = image.resize((width, length), Image.LANCZOS)
-        return ImageTk.PhotoImage(image)
-
-    def clicked_piece(self, x, y):
-        self.current_piece = (x,y)
+        :return: the saved position of the current piece as a tuple
+        """
+        self.current_piece = (row, column)
 
     def make_board(self):
         try:
@@ -85,6 +105,14 @@ class CreateBoard:
         return 0
 
     def place_pieces(self):
+        """
+        Places pieces on the chessboard by placing images on their corresponding starting tiles
+        in traditional chess. Stores the tiles with placed images into a 2d array containing strings.
+        The first character in the string stores the colour of the piece and the second
+        stores the type of piece (e.g, white bishop = 'br')
+        
+        :return: None
+        """
         first_row = self.board[0]
         second_row = self.board[1]
         second_last_row = self.board[6]
