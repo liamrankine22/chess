@@ -32,15 +32,15 @@ class Board:
         self.b_rook_image = Image.open("Pieces/b_rook_png_128px.png")
         self.b_rook = self.resize_image(self.b_rook_image, 70, 60)
 
-        #White Pawn Image
+        #White Bishop Image
         self.w_bishop_image = Image.open("Pieces/w_bishop_png_128px.png")
         self.w_bishop = self.resize_image(self.w_bishop_image, 70, 60)
 
-        # White Pawn Image
+        # White King Image
         self.w_king_image = Image.open("Pieces/w_king_png_128px.png")
         self.w_king = self.resize_image(self.w_king_image, 70, 60)
 
-        # White Pawn Image
+        # White Knight Image
         self.w_knight_image = Image.open("Pieces/w_knight_png_128px.png")
         self.w_knight = self.resize_image(self.w_knight_image, 70, 60)
 
@@ -48,11 +48,11 @@ class Board:
         self.w_pawn_image = Image.open("Pieces/w_pawn_png_128px.png")
         self.w_pawn = self.resize_image(self.w_pawn_image, 70, 60)
 
-        # White Pawn Image
+        # White Queen Image
         self.w_queen_image = Image.open("Pieces/w_queen_png_128px.png")
         self.w_queen = self.resize_image(self.w_queen_image, 70, 60)
 
-        # White Pawn Image
+        # White Rook Image
         self.w_rook_image = Image.open("Pieces/w_rook_png_128px.png")
         self.w_rook = self.resize_image(self.w_rook_image, 70, 60)
 
