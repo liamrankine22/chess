@@ -9,51 +9,51 @@ class Board:
         self.pieces_placement = [["" for x in range(0, 8)] for y in range(0, 8)]
 
         # Black Bishop Image
-        self.b_bishop_image = Image.open("b_bishop_png_128px.png")
+        self.b_bishop_image = Image.open("Pieces/b_bishop_png_128px.png")
         self.b_bishop = self.resize_image(self.b_bishop_image, 70, 60)
 
         # Black King Image
-        self.b_king_image = Image.open("b_king_png_128px.png")
+        self.b_king_image = Image.open("Pieces/b_king_png_128px.png")
         self.b_king = self.resize_image(self.b_king_image, 70, 60)
 
         # Black Knight Image
-        self.b_knight_image = Image.open("b_knight_png_128px.png")
+        self.b_knight_image = Image.open("Pieces/b_knight_png_128px.png")
         self.b_knight = self.resize_image(self.b_knight_image, 70, 60)
 
         # Black Pawn Image
-        self.b_pawn_image = Image.open("b_pawn_png_128px.png")
+        self.b_pawn_image = Image.open("Pieces/b_pawn_png_128px.png")
         self.b_pawn = self.resize_image(self.b_pawn_image, 70, 60)
 
         # Black Queen Image
-        self.b_queen_image = Image.open("b_queen_png_128px.png")
+        self.b_queen_image = Image.open("Pieces/b_queen_png_128px.png")
         self.b_queen = self.resize_image(self.b_queen_image, 70, 60)
 
         #Black Rook Image
-        self.b_rook_image = Image.open("b_rook_png_128px.png")
+        self.b_rook_image = Image.open("Pieces/b_rook_png_128px.png")
         self.b_rook = self.resize_image(self.b_rook_image, 70, 60)
 
         #White Pawn Image
-        self.w_bishop_image = Image.open("w_bishop_png_128px.png")
+        self.w_bishop_image = Image.open("Pieces/w_bishop_png_128px.png")
         self.w_bishop = self.resize_image(self.w_bishop_image, 70, 60)
 
         # White Pawn Image
-        self.w_king_image = Image.open("w_king_png_128px.png")
+        self.w_king_image = Image.open("Pieces/w_king_png_128px.png")
         self.w_king = self.resize_image(self.w_king_image, 70, 60)
 
         # White Pawn Image
-        self.w_knight_image = Image.open("w_knight_png_128px.png")
+        self.w_knight_image = Image.open("Pieces/w_knight_png_128px.png")
         self.w_knight = self.resize_image(self.w_knight_image, 70, 60)
 
         # White Pawn Image
-        self.w_pawn_image = Image.open("w_pawn_png_128px.png")
+        self.w_pawn_image = Image.open("Pieces/w_pawn_png_128px.png")
         self.w_pawn = self.resize_image(self.w_pawn_image, 70, 60)
 
         # White Pawn Image
-        self.w_queen_image = Image.open("w_queen_png_128px.png")
+        self.w_queen_image = Image.open("Pieces/w_queen_png_128px.png")
         self.w_queen = self.resize_image(self.w_queen_image, 70, 60)
 
         # White Pawn Image
-        self.w_rook_image = Image.open("w_rook_png_128px.png")
+        self.w_rook_image = Image.open("Pieces/w_rook_png_128px.png")
         self.w_rook = self.resize_image(self.w_rook_image, 70, 60)
 
     def resize_image(self, image, width, length):
