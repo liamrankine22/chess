@@ -35,6 +35,8 @@ class CreateBoard:
         place_pieces() --> None
             Places the pieces on the board by putting images on the starting tiles and storing
             their locations in a 2d array
+        place_pieces_helper(row_list: tiles, row: int, i: int, colour: str) --> None
+            Helper function for the place_pieces method that places the pieces on the back rows
     """
 
     def __init__(self):
@@ -104,13 +106,66 @@ class CreateBoard:
 
         return 0
 
+    def place_pieces_helper(self, row_list, row, i, colour:str):
+        """
+        Helper function for the place_pieces method. Places the back rows of each side
+
+        :param row_list: the list of tiles on the given row
+        :param row: the row for the tiles to be placed on
+        :param i: iterated number to be used for the column
+        :param colour: the string value of the colour
+
+        :return: None
+        """
+        for tile in row_list:
+            if i == 0 or i == 7:
+                if colour == 'b':
+                    tile.config(image=self.b_rook, compound='center', command=lambda column=i: self.clicked_piece(row, column))
+                    self.pieces_placement[row][i] = f'{colour}r'
+                else:
+                    tile.config(image=self.w_rook, compound='center', command=lambda column=i: self.clicked_piece(row, column))
+                    self.pieces_placement[row][i] = f'{colour}r'
+
+            elif i == 1 or i == 6:
+                if colour == 'b':
+                    tile.config(image=self.b_knight, compound='center', command=lambda column=i: self.clicked_piece(row, column))
+                    self.pieces_placement[row][i] = f'{colour}n'
+                else:
+                    tile.config(image=self.w_knight, compound='center', command=lambda column=i: self.clicked_piece(row, column))
+                    self.pieces_placement[row][i] = f'{colour}n'
+
+            elif i == 2 or i == 5:
+                if colour == 'b':
+                    tile.config(image=self.b_bishop, compound='center', command=lambda column=i: self.clicked_piece(row, column))
+                    self.pieces_placement[row][i] = f'{colour}b'
+                else:
+                    tile.config(image=self.w_bishop, compound='center', command=lambda column=i: self.clicked_piece(row, column))
+                    self.pieces_placement[row][i] = f'{colour}b'
+
+            elif i == 3:
+                if colour == 'b':
+                    tile.config(image=self.b_queen, compound='center', command=lambda column=i: self.clicked_piece(row, column))
+                    self.pieces_placement[row][i] = f'{colour}q'
+                else:
+                    tile.config(image=self.w_queen, compound='center', command=lambda column=i: self.clicked_piece(row, column))
+                    self.pieces_placement[row][i] = f'{colour}q'
+
+            else:
+                if colour == 'b':
+                    tile.config(image=self.b_king, compound='center', command=lambda x=i: self.clicked_piece(0, x))
+                    self.pieces_placement[row][i] = f'{colour}k'
+                else:
+                    tile.config(image=self.w_king, compound='center', command=lambda column=i: self.clicked_piece(row, column))
+                    self.pieces_placement[row][i] = f'{colour}k'
+            i += 1
+
     def place_pieces(self):
         """
         Places pieces on the chessboard by placing images on their corresponding starting tiles
         in traditional chess. Stores the tiles with placed images into a 2d array containing strings.
         The first character in the string stores the colour of the piece and the second
         stores the type of piece (e.g, white bishop = 'br')
-        
+
         :return: None
         """
         first_row = self.board[0]
@@ -118,64 +173,22 @@ class CreateBoard:
         second_last_row = self.board[6]
         last_row = self.board[7]
         i = 0
-
-        for t in first_row:
-            if i == 0 or i == 7:
-                t.config(image=self.b_rook, compound='center', command= lambda x=i : self.clicked_piece(0, x))
-                self.pieces_placement[0][i] = 'br'
-
-            elif i == 1 or i == 6:
-                t.config(image=self.b_knight, compound='center', command= lambda x=i : self.clicked_piece(0, x))
-                self.pieces_placement[0][i] = 'bn'
-
-            elif i == 2 or i == 5:
-                t.config(image=self.b_bishop, compound='center', command= lambda x=i : self.clicked_piece(0, x))
-                self.pieces_placement[0][i] = 'bb'
-
-            elif i == 3:
-                t.config(image=self.b_queen, compound='center', command= lambda x=i : self.clicked_piece(0, x))
-                self.pieces_placement[0][i] = 'bq'
-
-            else:
-                t.config(image=self.b_king, compound='center', command= lambda x=i : self.clicked_piece(0, x))
-                self.pieces_placement[0][i] = 'bk'
-
-            i += 1
+        self.place_pieces_helper(first_row, 0, i, 'b')
         i = 0
 
-        for t in second_row:
-            t.config(image=self.b_pawn, compound='center', command= lambda x=i : self.clicked_piece(1, x))
+        for tile in second_row:
+            tile.config(image=self.b_pawn, compound='center', command= lambda x=i : self.clicked_piece(1, x))
             self.pieces_placement[1][i] = 'bp'
             i += 1
         i = 0
 
-        for t in second_last_row:
-            t.config(image=self.w_pawn, compound='center', command= lambda x=i : self.clicked_piece(6, x))
+        for tile in second_last_row:
+            tile.config(image=self.w_pawn, compound='center', command= lambda x=i : self.clicked_piece(6, x))
             self.pieces_placement[6][i] = 'wp'
             i += 1
         i = 0
 
-        for t in last_row:
-            if i == 0 or i == 7:
-                t.config(image=self.w_rook, compound='center', command= lambda x=i : self.clicked_piece(7, x))
-                self.pieces_placement[7][i] = 'wr'
-
-            elif i == 1 or i == 6:
-                t.config(image=self.w_knight, compound='center', command= lambda x=i : self.clicked_piece(7, x))
-                self.pieces_placement[7][i] = 'wn'
-
-            elif i == 2 or i == 5:
-                t.config(image=self.w_bishop, compound='center', command= lambda x=i : self.clicked_piece(7, x))
-                self.pieces_placement[7][i] = 'wb'
-
-            elif i == 3:
-                t.config(image=self.w_queen, compound='center', command= lambda x=i : self.clicked_piece(7, x))
-                self.pieces_placement[7][i] = 'wq'
-
-            else:
-                t.config(image=self.w_king, compound='center', command= lambda x=i : self.clicked_piece(7, x))
-                self.pieces_placement[7][i] = 'wk'
-            i += 1
+        self.place_pieces_helper(last_row, 7, i, 'w')
         i = 0
 
 class PlayChess(CreateBoard):
@@ -211,9 +224,15 @@ class PlayChess(CreateBoard):
                 if x_pos + 1 < 8:
                     tile = self.board[x_pos + 1][y_pos]
                     tile.config(bg="#d11d3e")
+                if x_pos == 1:
+                    tile = self.board[x_pos + 2][y_pos]
+                    tile.config(bg="#d11d3e")
             elif piece[0] == 'w':
                 if x_pos - 1 > 0:
                     tile = self.board[x_pos - 1][y_pos]
+                    tile.config(bg="#d11d3e")
+                if x_pos == 6:
+                    tile = self.board[x_pos - 2][y_pos]
                     tile.config(bg="#d11d3e")
 
 root = Tk()
