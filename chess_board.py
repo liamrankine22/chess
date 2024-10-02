@@ -1,6 +1,7 @@
 import tkinter
 from tkinter import *
 from PIL import Image, ImageTk
+import selected_pieces
 
 
 class CreateBoard:
@@ -196,6 +197,7 @@ class PlayChess(CreateBoard):
         super().__init__()
         self.make_board() #creates board
         self.place_pieces() #places pieces on board
+
 
     def clicked_piece(self, x, y):
         super(PlayChess, self).clicked_piece(x, y)
