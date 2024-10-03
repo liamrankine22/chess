@@ -242,7 +242,18 @@ class PlayChess(CreateBoard):
 
         elif piece[1] == 'r': #rook
             if self.selected_piece is not None:
-                self.take_place(self.board[x][y],x , y)
+                if self.selected_piece == self.board[x][y]: #Used for unselecting selected piece
+                    while self.moveable_spots.is_empty() is False:
+                        tile = self.moveable_spots.remove_piece()
+                        if (tile.y_pos % 2 == 1) & (tile.x_pos % 2 == 0) | (tile.x_pos % 2 == 1) & (
+                                tile.y_pos % 2 == 0):
+                            tile.data.config(bg="#5c915d")
+                        else:
+                            tile.data.config(bg="#ddebc3")
+                    self.selected_piece = None
+                    return
+                else:
+                    self.take_place(self.board[x][y], x, y)
             else:
                 self.selected_piece = self.board[x][y]
                 self.selected_piece_x = x
@@ -271,7 +282,18 @@ class PlayChess(CreateBoard):
 
         elif piece[1] == 'n': #knight
             if self.selected_piece is not None:
-                self.take_place(self.board[x][y],x , y)
+                if self.selected_piece == self.board[x][y]:
+                    while self.moveable_spots.is_empty() is False:
+                        tile = self.moveable_spots.remove_piece()
+                        if (tile.y_pos % 2 == 1) & (tile.x_pos % 2 == 0) | (tile.x_pos % 2 == 1) & (
+                                tile.y_pos % 2 == 0):
+                            tile.data.config(bg="#5c915d")
+                        else:
+                            tile.data.config(bg="#ddebc3")
+                    self.selected_piece = None
+                    return
+                else:
+                    self.take_place(self.board[x][y], x, y)
             else:
                 self.selected_piece = self.board[x][y]
                 self.selected_piece_x = x
@@ -319,7 +341,18 @@ class PlayChess(CreateBoard):
 
         elif piece[1] == 'b': #bishop
             if self.selected_piece is not None:
-                self.take_place(self.board[x][y],x , y)
+                if self.selected_piece == self.board[x][y]:
+                    while self.moveable_spots.is_empty() is False:
+                        tile = self.moveable_spots.remove_piece()
+                        if (tile.y_pos % 2 == 1) & (tile.x_pos % 2 == 0) | (tile.x_pos % 2 == 1) & (
+                                tile.y_pos % 2 == 0):
+                            tile.data.config(bg="#5c915d")
+                        else:
+                            tile.data.config(bg="#ddebc3")
+                    self.selected_piece = None
+                    return
+                else:
+                    self.take_place(self.board[x][y], x, y)
             else:
                 self.selected_piece = self.board[x][y]
                 self.selected_piece_x = x
@@ -347,7 +380,18 @@ class PlayChess(CreateBoard):
 
         elif piece[1] == 'q': #queen
             if self.selected_piece is not None:
-                self.take_place(self.board[x][y],x , y)
+                if self.selected_piece == self.board[x][y]:
+                    while self.moveable_spots.is_empty() is False:
+                        tile = self.moveable_spots.remove_piece()
+                        if (tile.y_pos % 2 == 1) & (tile.x_pos % 2 == 0) | (tile.x_pos % 2 == 1) & (
+                                tile.y_pos % 2 == 0):
+                            tile.data.config(bg="#5c915d")
+                        else:
+                            tile.data.config(bg="#ddebc3")
+                    self.selected_piece = None
+                    return
+                else:
+                    self.take_place(self.board[x][y], x, y)
             else:
                 self.selected_piece = self.board[x][y]
                 self.selected_piece_x = x
@@ -395,7 +439,18 @@ class PlayChess(CreateBoard):
 
         elif piece[1] == 'k': #king
             if self.selected_piece is not None:
-                self.take_place(self.board[x][y],x , y)
+                if self.selected_piece == self.board[x][y]:
+                    while self.moveable_spots.is_empty() is False:
+                        tile = self.moveable_spots.remove_piece()
+                        if (tile.y_pos % 2 == 1) & (tile.x_pos % 2 == 0) | (tile.x_pos % 2 == 1) & (
+                                tile.y_pos % 2 == 0):
+                            tile.data.config(bg="#5c915d")
+                        else:
+                            tile.data.config(bg="#ddebc3")
+                    self.selected_piece = None
+                    return
+                else:
+                    self.take_place(self.board[x][y], x, y)
             else:
                 self.selected_piece = self.board[x][y]
                 self.selected_piece_x = x
@@ -443,7 +498,18 @@ class PlayChess(CreateBoard):
 
         elif piece[1] == 'p': #pawn
             if self.selected_piece is not None:
-                self.take_place(self.board[x][y],x , y)
+                if self.selected_piece == self.board[x][y]:
+                    while self.moveable_spots.is_empty() is False:
+                        tile = self.moveable_spots.remove_piece()
+                        if (tile.y_pos % 2 == 1) & (tile.x_pos % 2 == 0) | (tile.x_pos % 2 == 1) & (
+                                tile.y_pos % 2 == 0):
+                            tile.data.config(bg="#5c915d")
+                        else:
+                            tile.data.config(bg="#ddebc3")
+                    self.selected_piece = None
+                    return
+                else:
+                    self.take_place(self.board[x][y], x, y)
             else:
                 self.selected_piece = self.board[x][y]
                 self.selected_piece_x = x
