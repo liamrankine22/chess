@@ -222,10 +222,18 @@ class PlayChess(CreateBoard):
                 if move_to_space is not None:
                     print(move_to_space.data)
                     taken_image = self.selected_piece.cget("image")
-                    move_to_space.data.config(bg="#5c915d", image=taken_image)
+                    move_to_space.data.config(image=taken_image)
                     print("Clearing image from selected piece:", self.selected_piece)
                     self.board[self.selected_piece_x][self.selected_piece_y].config(image="")
                     print("Successfully cleared image")
+
+                    while self.moveable_spots.is_empty() is False:
+                        tile = self.moveable_spots.remove_piece()
+                        if (tile.y_pos % 2 == 1) & (tile.x_pos % 2 == 0) | (tile.x_pos % 2 == 1) & (tile.y_pos % 2 == 0):
+                            tile.data.config(bg="#5c915d")
+                        else:
+                            tile.data.config(bg="#ddebc3")
+
                     self.selected_piece = None
 
         elif piece[1] == 'r': #rook
@@ -252,20 +260,20 @@ class PlayChess(CreateBoard):
                 if x_pos + 1 < 8:
                     tile = self.board[x_pos + 1][y_pos]
                     tile.config(bg="#d11d3e")
-                    self.moveable_spots.add_selected_piece(tile)
+                    self.moveable_spots.add_selected_piece(tile, x + 1, y)
                 if x_pos == 1:
                     tile = self.board[x_pos + 2][y_pos]
                     tile.config(bg="#d11d3e")
-                    self.moveable_spots.add_selected_piece(tile)
+                    self.moveable_spots.add_selected_piece(tile, x + 2, y)
             elif piece[0] == 'w':
                 if x_pos - 1 > 0:
                     tile = self.board[x_pos - 1][y_pos]
                     tile.config(bg="#d11d3e")
-                    self.moveable_spots.add_selected_piece(tile)
+                    self.moveable_spots.add_selected_piece(tile, x - 1, y)
                 if x_pos == 6:
                     tile = self.board[x_pos - 2][y_pos]
                     tile.config(bg="#d11d3e")
-                    self.moveable_spots.add_selected_piece(tile)
+                    self.moveable_spots.add_selected_piece(tile, x - 2, y)
 
 root = Tk()
 root.title("Chess")

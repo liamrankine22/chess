@@ -64,11 +64,12 @@ class SelectedPieces:
         """
         Removes the first added piece
 
-        :return: None
+        :return: the node removed
         """
         if not self.is_empty():
             current_node = self.head
             self.head = current_node.next
+            return current_node
         else:
             print("List empty")
 
