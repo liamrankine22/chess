@@ -7,16 +7,18 @@ class Node:
         next (Node): The connecting next node
 
     """
-    def __init__(self, data):
+    def __init__(self, data, x_pos, y_pos):
         """
         Initializes the Node with data
 
         :param data: data that will be stored in the node
         """
         self.data = data
+        self.x_pos = x_pos
+        self.y_pos = y_pos
         self.next = None
 
-class SelectedPieces():
+class SelectedPieces:
     """
     Modified singly linked list used for storing pieces
 
@@ -39,15 +41,17 @@ class SelectedPieces():
         """
         self.head = None
 
-    def add_selected_piece(self, data):
+    def add_selected_piece(self, data, x_pos, y_pos):
         """
         Adds a piece to the list
 
+        :param y_pos: x position of the piece
+        :param x_pos: y position of the piece
         :param data: data to be stored in the newly added node
 
         :return: None
         """
-        new_node = Node(data)
+        new_node = Node(data, x_pos, y_pos)
         if self.head is None:
             self.head = new_node
         else:

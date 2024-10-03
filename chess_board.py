@@ -208,37 +208,25 @@ class PlayChess(CreateBoard):
         self.selected_piece_x = None
         self.selected_piece_y = None
 
+    def place_pieces(self):
+        super().place_pieces()
 
     def clicked_piece(self, x, y):
         super(PlayChess, self).clicked_piece(x, y)
         x_pos, y_pos = self.current_piece
-        #print(f"{x_pos}, {y_pos}")
         piece = self.pieces_placement[x_pos][y_pos]
-        #print(piece)
-        #print(f"Checking piece at {x_pos}, {y_pos}: {piece}")
 
         if piece == '':
             if self.selected_piece is not None:
                 move_to_space = self.moveable_spots.iterate(self.board[x][y])
                 if move_to_space is not None:
-                    if (y % 2 == 1) & (x % 2 == 0) | (x % 2 == 1) & (y % 2 == 0):
-                        print(move_to_space.data)
-                        image = self.selected_piece.cget("image")
-                        command = self.selected_piece.cget("command")
-                        move_to_space.data.config(bg="#5c915d", image=image)
-                        print("Clearing image from selected piece:", self.selected_piece)
-                        self.board[self.selected_piece_x][self.selected_piece_y].config(image=None)
-                        print("sucessfully cleared image")
-                        self.selected_piece=None
-                    else:
-                        print(move_to_space.data)
-                        image = self.selected_piece.cget("image")
-                        command = self.selected_piece.cget("command")
-                        move_to_space.data.config(bg="#ddebc3", image=image)
-                        print("Clearing image from selected piece:", self.selected_piece)
-                        self.board[self.selected_piece_x][self.selected_piece_y].config(image=None)
-                        print("sucessfully cleared image")
-                        self.selected_piece = None
+                    print(move_to_space.data)
+                    taken_image = self.selected_piece.cget("image")
+                    move_to_space.data.config(bg="#5c915d", image=taken_image)
+                    print("Clearing image from selected piece:", self.selected_piece)
+                    self.board[self.selected_piece_x][self.selected_piece_y].config(image="")
+                    print("Successfully cleared image")
+                    self.selected_piece = None
 
         elif piece[1] == 'r': #rook
             print("r")
