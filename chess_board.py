@@ -208,6 +208,28 @@ class PlayChess(CreateBoard):
         self.selected_piece_x = None
         self.selected_piece_y = None
 
+    def take_place(self, board_location, x_pos, y_pos):
+        move_to_space = self.moveable_spots.iterate(board_location)
+        if move_to_space is not None:
+            print(move_to_space.data)
+            taken_image = self.selected_piece.cget("image")
+            move_to_space.data.config(image=taken_image)
+            print("Clearing image from selected piece:", self.selected_piece)
+            self.board[self.selected_piece_x][self.selected_piece_y].config(image="")
+            print("Successfully cleared image")
+
+            while self.moveable_spots.is_empty() is False:
+                tile = self.moveable_spots.remove_piece()
+                if (tile.y_pos % 2 == 1) & (tile.x_pos % 2 == 0) | (tile.x_pos % 2 == 1) & (tile.y_pos % 2 == 0):
+                    tile.data.config(bg="#5c915d")
+                else:
+                    tile.data.config(bg="#ddebc3")
+
+            piece_type = self.pieces_placement[self.selected_piece_x][self.selected_piece_y]
+            self.pieces_placement[x_pos][y_pos] = piece_type
+            self.pieces_placement[self.selected_piece_x][self.selected_piece_y] = ''
+            self.selected_piece = None
+
     def clicked_piece(self, x, y):
         super(PlayChess, self).clicked_piece(x, y)
         x_pos, y_pos = self.current_piece
@@ -215,240 +237,259 @@ class PlayChess(CreateBoard):
 
         if piece == '':
             if self.selected_piece is not None:
-                move_to_space = self.moveable_spots.iterate(self.board[x][y])
-                if move_to_space is not None:
-                    print(move_to_space.data)
-                    taken_image = self.selected_piece.cget("image")
-                    move_to_space.data.config(image=taken_image)
-                    print("Clearing image from selected piece:", self.selected_piece)
-                    self.board[self.selected_piece_x][self.selected_piece_y].config(image="")
-                    print("Successfully cleared image")
-
-                    while self.moveable_spots.is_empty() is False:
-                        tile = self.moveable_spots.remove_piece()
-                        if (tile.y_pos % 2 == 1) & (tile.x_pos % 2 == 0) | (tile.x_pos % 2 == 1) & (tile.y_pos % 2 == 0):
-                            tile.data.config(bg="#5c915d")
-                        else:
-                            tile.data.config(bg="#ddebc3")
-
-                    piece_type = self.pieces_placement[self.selected_piece_x][self.selected_piece_y]
-                    self.pieces_placement[x][y] = piece_type
-                    self.pieces_placement[self.selected_piece_x][self.selected_piece_y] = ''
-                    self.selected_piece = None
+                self.take_place(self.board[x][y], x, y)
 
 
         elif piece[1] == 'r': #rook
-            self.selected_piece = self.board[x][y]
-            self.selected_piece_x = x
-            self.selected_piece_y = y
-            for i in range(0,8):
-                if x_pos + i < 8:
-                    tile = self.board[x_pos + i][y_pos]
-                    tile.config(bg="#d11d3e")
-                    self.moveable_spots.add_selected_piece(tile, x + i, y)
+            if self.selected_piece is not None:
+                self.take_place(self.board[x][y],x , y)
+            else:
+                self.selected_piece = self.board[x][y]
+                self.selected_piece_x = x
+                self.selected_piece_y = y
+                for i in range(0,8):
+                    if x_pos + i < 8:
+                        tile = self.board[x_pos + i][y_pos]
+                        tile.config(bg="#d11d3e")
+                        self.moveable_spots.add_selected_piece(tile, x + i, y)
 
-                if y_pos + i < 8:
-                    tile = self.board[x_pos][y_pos + i]
-                    tile.config(bg="#d11d3e")
-                    self.moveable_spots.add_selected_piece(tile, x, y + i)
+                    if y_pos + i < 8:
+                        tile = self.board[x_pos][y_pos + i]
+                        tile.config(bg="#d11d3e")
+                        self.moveable_spots.add_selected_piece(tile, x, y + i)
 
-                if x_pos - i >= 0:
-                    tile = self.board[x_pos - i][y_pos]
-                    tile.config(bg="#d11d3e")
-                    self.moveable_spots.add_selected_piece(tile, x - i, y)
+                    if x_pos - i >= 0:
+                        tile = self.board[x_pos - i][y_pos]
+                        tile.config(bg="#d11d3e")
+                        self.moveable_spots.add_selected_piece(tile, x - i, y)
 
-                if y_pos - i >= 0:
-                    tile = self.board[x_pos][y_pos - i]
-                    tile.config(bg="#d11d3e")
-                    self.moveable_spots.add_selected_piece(tile, x, y - i)
+                    if y_pos - i >= 0:
+                        tile = self.board[x_pos][y_pos - i]
+                        tile.config(bg="#d11d3e")
+                        self.moveable_spots.add_selected_piece(tile, x, y - i)
 
 
         elif piece[1] == 'n': #knight
-            self.selected_piece = self.board[x][y]
-            self.selected_piece_x = x
-            self.selected_piece_y = y
-            print(self.selected_piece)
-            if x_pos + 2 < 8 and y_pos + 1 < 8:
-                tile = self.board[x_pos + 2][y_pos + 1]
-                tile.config(bg="#d11d3e")
-                self.moveable_spots.add_selected_piece(tile, x + 2, y + 1)
+            if self.selected_piece is not None:
+                self.take_place(self.board[x][y],x , y)
+            else:
+                self.selected_piece = self.board[x][y]
+                self.selected_piece_x = x
+                self.selected_piece_y = y
+                print(self.selected_piece)
+                if x_pos + 2 < 8 and y_pos + 1 < 8:
+                    tile = self.board[x_pos + 2][y_pos + 1]
+                    tile.config(bg="#d11d3e")
+                    self.moveable_spots.add_selected_piece(tile, x + 2, y + 1)
 
-            if x_pos + 2 < 8 and y_pos - 1 >= 0:
-                tile = self.board[x_pos + 2][y_pos - 1]
-                tile.config(bg="#d11d3e")
-                self.moveable_spots.add_selected_piece(tile, x + 2, y - 1)
+                if x_pos + 2 < 8 and y_pos - 1 >= 0:
+                    tile = self.board[x_pos + 2][y_pos - 1]
+                    tile.config(bg="#d11d3e")
+                    self.moveable_spots.add_selected_piece(tile, x + 2, y - 1)
 
-            if x_pos - 2 >= 0 and y_pos - 1 >= 0:
-                tile = self.board[x_pos - 2][y_pos - 1]
-                tile.config(bg="#d11d3e")
-                self.moveable_spots.add_selected_piece(tile, x -2, y - 1)
+                if x_pos - 2 >= 0 and y_pos - 1 >= 0:
+                    tile = self.board[x_pos - 2][y_pos - 1]
+                    tile.config(bg="#d11d3e")
+                    self.moveable_spots.add_selected_piece(tile, x -2, y - 1)
 
-            if x_pos - 2 >= 0 and y_pos + 1 < 8:
-                tile = self.board[x_pos - 2][y_pos + 1]
-                tile.config(bg="#d11d3e")
-                self.moveable_spots.add_selected_piece(tile, x - 2, y + 1)
+                if x_pos - 2 >= 0 and y_pos + 1 < 8:
+                    tile = self.board[x_pos - 2][y_pos + 1]
+                    tile.config(bg="#d11d3e")
+                    self.moveable_spots.add_selected_piece(tile, x - 2, y + 1)
 
-            if y_pos + 2 < 8 and x_pos - 1 >= 0:
-                tile = self.board[x_pos - 1][y_pos + 2]
-                tile.config(bg="#d11d3e")
-                self.moveable_spots.add_selected_piece(tile, x - 1, y + 2)
+                if y_pos + 2 < 8 and x_pos - 1 >= 0:
+                    tile = self.board[x_pos - 1][y_pos + 2]
+                    tile.config(bg="#d11d3e")
+                    self.moveable_spots.add_selected_piece(tile, x - 1, y + 2)
 
-            if y_pos + 2 < 8 and x_pos + 1 < 8:
-                tile = self.board[x_pos + 1][y_pos + 2]
-                tile.config(bg="#d11d3e")
-                self.moveable_spots.add_selected_piece(tile, x + 1, y + 2)
+                if y_pos + 2 < 8 and x_pos + 1 < 8:
+                    tile = self.board[x_pos + 1][y_pos + 2]
+                    tile.config(bg="#d11d3e")
+                    self.moveable_spots.add_selected_piece(tile, x + 1, y + 2)
 
-            if y_pos - 2 >= 0 and x_pos - 1 >= 0:
-                tile = self.board[x_pos - 1][y_pos - 2]
-                tile.config(bg="#d11d3e")
-                self.moveable_spots.add_selected_piece(tile, x - 1, y - 2)
+                if y_pos - 2 >= 0 and x_pos - 1 >= 0:
+                    tile = self.board[x_pos - 1][y_pos - 2]
+                    tile.config(bg="#d11d3e")
+                    self.moveable_spots.add_selected_piece(tile, x - 1, y - 2)
 
-            if y_pos - 2 >= 0 and x_pos + 1 < 8:
-                tile = self.board[x_pos + 1][y_pos - 2]
-                tile.config(bg="#d11d3e")
-                self.moveable_spots.add_selected_piece(tile, x - 2, y + 1)
+                if y_pos - 2 >= 0 and x_pos + 1 < 8:
+                    tile = self.board[x_pos + 1][y_pos - 2]
+                    tile.config(bg="#d11d3e")
+                    self.moveable_spots.add_selected_piece(tile, x - 2, y + 1)
 
         elif piece[1] == 'b': #bishop
-            self.selected_piece = self.board[x][y]
-            self.selected_piece_x = x
-            self.selected_piece_y = y
-            for i in range(0,8):
-                if x_pos + i < 8 and y_pos + i < 8:
-                    tile = self.board[x_pos + i][y_pos + i]
-                    tile.config(bg="#d11d3e")
-                    self.moveable_spots.add_selected_piece(tile, x + i, y + i)
+            if self.selected_piece is not None:
+                self.take_place(self.board[x][y],x , y)
+            else:
+                self.selected_piece = self.board[x][y]
+                self.selected_piece_x = x
+                self.selected_piece_y = y
+                for i in range(0,8):
+                    if x_pos + i < 8 and y_pos + i < 8:
+                        tile = self.board[x_pos + i][y_pos + i]
+                        tile.config(bg="#d11d3e")
+                        self.moveable_spots.add_selected_piece(tile, x + i, y + i)
 
-                if x_pos + i < 8 and y_pos - i >= 0:
-                    tile = self.board[x_pos + i][y_pos - i]
-                    tile.config(bg="#d11d3e")
-                    self.moveable_spots.add_selected_piece(tile, x + i, y - i)
+                    if x_pos + i < 8 and y_pos - i >= 0:
+                        tile = self.board[x_pos + i][y_pos - i]
+                        tile.config(bg="#d11d3e")
+                        self.moveable_spots.add_selected_piece(tile, x + i, y - i)
 
-                if x_pos - i >= 0 and y_pos + i < 8:
-                    tile = self.board[x_pos - i][y_pos + i]
-                    tile.config(bg="#d11d3e")
-                    self.moveable_spots.add_selected_piece(tile, x - i, y + i)
+                    if x_pos - i >= 0 and y_pos + i < 8:
+                        tile = self.board[x_pos - i][y_pos + i]
+                        tile.config(bg="#d11d3e")
+                        self.moveable_spots.add_selected_piece(tile, x - i, y + i)
 
-                if x_pos - i >= 0 and y_pos - i >= 0:
-                    tile = self.board[x_pos - i][y_pos - i]
-                    tile.config(bg="#d11d3e")
-                    self.moveable_spots.add_selected_piece(tile, x - i, y - i)
+                    if x_pos - i >= 0 and y_pos - i >= 0:
+                        tile = self.board[x_pos - i][y_pos - i]
+                        tile.config(bg="#d11d3e")
+                        self.moveable_spots.add_selected_piece(tile, x - i, y - i)
 
         elif piece[1] == 'q': #queen
-            self.selected_piece = self.board[x][y]
-            self.selected_piece_x = x
-            self.selected_piece_y = y
-            for i in range(0,8):
-                if x_pos + i < 8 and y_pos + i < 8:
-                    tile = self.board[x_pos + i][y_pos + i]
-                    tile.config(bg="#d11d3e")
-                    self.moveable_spots.add_selected_piece(tile, x + i, y + i)
+            if self.selected_piece is not None:
+                self.take_place(self.board[x][y],x , y)
+            else:
+                self.selected_piece = self.board[x][y]
+                self.selected_piece_x = x
+                self.selected_piece_y = y
+                for i in range(0,8):
+                    if x_pos + i < 8 and y_pos + i < 8:
+                        tile = self.board[x_pos + i][y_pos + i]
+                        tile.config(bg="#d11d3e")
+                        self.moveable_spots.add_selected_piece(tile, x + i, y + i)
 
-                if x_pos + i < 8 and y_pos - i >= 0:
-                    tile = self.board[x_pos + i][y_pos - i]
-                    tile.config(bg="#d11d3e")
-                    self.moveable_spots.add_selected_piece(tile, x + i, y - i)
+                    if x_pos + i < 8 and y_pos - i >= 0:
+                        tile = self.board[x_pos + i][y_pos - i]
+                        tile.config(bg="#d11d3e")
+                        self.moveable_spots.add_selected_piece(tile, x + i, y - i)
 
-                if x_pos - i >= 0 and y_pos + i < 8:
-                    tile = self.board[x_pos - i][y_pos + i]
-                    tile.config(bg="#d11d3e")
-                    self.moveable_spots.add_selected_piece(tile, x - i, y + i)
+                    if x_pos - i >= 0 and y_pos + i < 8:
+                        tile = self.board[x_pos - i][y_pos + i]
+                        tile.config(bg="#d11d3e")
+                        self.moveable_spots.add_selected_piece(tile, x - i, y + i)
 
-                if x_pos - i >= 0 and y_pos - i >= 0:
-                    tile = self.board[x_pos - i][y_pos - i]
-                    tile.config(bg="#d11d3e")
-                    self.moveable_spots.add_selected_piece(tile, x - i, y - i)
+                    if x_pos - i >= 0 and y_pos - i >= 0:
+                        tile = self.board[x_pos - i][y_pos - i]
+                        tile.config(bg="#d11d3e")
+                        self.moveable_spots.add_selected_piece(tile, x - i, y - i)
 
-                if x_pos + i < 8:
-                    tile = self.board[x_pos + i][y_pos]
-                    tile.config(bg="#d11d3e")
-                    self.moveable_spots.add_selected_piece(tile, x + i, y)
+                    if x_pos + i < 8:
+                        tile = self.board[x_pos + i][y_pos]
+                        tile.config(bg="#d11d3e")
+                        self.moveable_spots.add_selected_piece(tile, x + i, y)
 
-                if y_pos + i < 8:
-                    tile = self.board[x_pos][y_pos + i]
-                    tile.config(bg="#d11d3e")
-                    self.moveable_spots.add_selected_piece(tile, x, y + i)
+                    if y_pos + i < 8:
+                        tile = self.board[x_pos][y_pos + i]
+                        tile.config(bg="#d11d3e")
+                        self.moveable_spots.add_selected_piece(tile, x, y + i)
 
-                if x_pos - i >= 0:
-                    tile = self.board[x_pos - i][y_pos]
-                    tile.config(bg="#d11d3e")
-                    self.moveable_spots.add_selected_piece(tile, x - i, y)
+                    if x_pos - i >= 0:
+                        tile = self.board[x_pos - i][y_pos]
+                        tile.config(bg="#d11d3e")
+                        self.moveable_spots.add_selected_piece(tile, x - i, y)
 
-                if y_pos - i >= 0:
-                    tile = self.board[x_pos][y_pos - i]
-                    tile.config(bg="#d11d3e")
-                    self.moveable_spots.add_selected_piece(tile, x, y - i)
+                    if y_pos - i >= 0:
+                        tile = self.board[x_pos][y_pos - i]
+                        tile.config(bg="#d11d3e")
+                        self.moveable_spots.add_selected_piece(tile, x, y - i)
 
         elif piece[1] == 'k': #king
-            self.selected_piece = self.board[x][y]
-            self.selected_piece_x = x
-            self.selected_piece_y = y
-            for i in range(0, 2):
-                if x_pos + i < 8 and y_pos + i < 8:
-                    tile = self.board[x_pos + i][y_pos + i]
-                    tile.config(bg="#d11d3e")
-                    self.moveable_spots.add_selected_piece(tile, x + i, y + i)
+            if self.selected_piece is not None:
+                self.take_place(self.board[x][y],x , y)
+            else:
+                self.selected_piece = self.board[x][y]
+                self.selected_piece_x = x
+                self.selected_piece_y = y
+                for i in range(0, 2):
+                    if x_pos + i < 8 and y_pos + i < 8:
+                        tile = self.board[x_pos + i][y_pos + i]
+                        tile.config(bg="#d11d3e")
+                        self.moveable_spots.add_selected_piece(tile, x + i, y + i)
 
-                if x_pos + i < 8 and y_pos - i >= 0:
-                    tile = self.board[x_pos + i][y_pos - i]
-                    tile.config(bg="#d11d3e")
-                    self.moveable_spots.add_selected_piece(tile, x + i, y - i)
+                    if x_pos + i < 8 and y_pos - i >= 0:
+                        tile = self.board[x_pos + i][y_pos - i]
+                        tile.config(bg="#d11d3e")
+                        self.moveable_spots.add_selected_piece(tile, x + i, y - i)
 
-                if x_pos - i >= 0 and y_pos + i < 8:
-                    tile = self.board[x_pos - i][y_pos + i]
-                    tile.config(bg="#d11d3e")
-                    self.moveable_spots.add_selected_piece(tile, x - i, y + i)
+                    if x_pos - i >= 0 and y_pos + i < 8:
+                        tile = self.board[x_pos - i][y_pos + i]
+                        tile.config(bg="#d11d3e")
+                        self.moveable_spots.add_selected_piece(tile, x - i, y + i)
 
-                if x_pos - i >= 0 and y_pos - i >= 0:
-                    tile = self.board[x_pos - i][y_pos - i]
-                    tile.config(bg="#d11d3e")
-                    self.moveable_spots.add_selected_piece(tile, x - i, y - i)
+                    if x_pos - i >= 0 and y_pos - i >= 0:
+                        tile = self.board[x_pos - i][y_pos - i]
+                        tile.config(bg="#d11d3e")
+                        self.moveable_spots.add_selected_piece(tile, x - i, y - i)
 
-                if x_pos + i < 8:
-                    tile = self.board[x_pos + i][y_pos]
-                    tile.config(bg="#d11d3e")
-                    self.moveable_spots.add_selected_piece(tile, x + i, y)
+                    if x_pos + i < 8:
+                        tile = self.board[x_pos + i][y_pos]
+                        tile.config(bg="#d11d3e")
+                        self.moveable_spots.add_selected_piece(tile, x + i, y)
 
-                if y_pos + i < 8:
-                    tile = self.board[x_pos][y_pos + i]
-                    tile.config(bg="#d11d3e")
-                    self.moveable_spots.add_selected_piece(tile, x, y + i)
+                    if y_pos + i < 8:
+                        tile = self.board[x_pos][y_pos + i]
+                        tile.config(bg="#d11d3e")
+                        self.moveable_spots.add_selected_piece(tile, x, y + i)
 
-                if x_pos - i >= 0:
-                    tile = self.board[x_pos - i][y_pos]
-                    tile.config(bg="#d11d3e")
-                    self.moveable_spots.add_selected_piece(tile, x - i, y)
+                    if x_pos - i >= 0:
+                        tile = self.board[x_pos - i][y_pos]
+                        tile.config(bg="#d11d3e")
+                        self.moveable_spots.add_selected_piece(tile, x - i, y)
 
-                if y_pos - i >= 0:
-                    tile = self.board[x_pos][y_pos - i]
-                    tile.config(bg="#d11d3e")
-                    self.moveable_spots.add_selected_piece(tile, x, y - i)
+                    if y_pos - i >= 0:
+                        tile = self.board[x_pos][y_pos - i]
+                        tile.config(bg="#d11d3e")
+                        self.moveable_spots.add_selected_piece(tile, x, y - i)
 
         elif piece[1] == 'p': #pawn
-            self.selected_piece = self.board[x][y]
-            self.selected_piece_x = x
-            self.selected_piece_y = y
-            print(self.selected_piece)
-            if piece[0] == 'b':
-                if x_pos + 1 < 8:
-                    tile = self.board[x_pos + 1][y_pos]
-                    tile.config(bg="#d11d3e")
-                    self.moveable_spots.add_selected_piece(tile, x + 1, y)
+            if self.selected_piece is not None:
+                self.take_place(self.board[x][y],x , y)
+            else:
+                self.selected_piece = self.board[x][y]
+                self.selected_piece_x = x
+                self.selected_piece_y = y
+                print(self.selected_piece)
+                if piece[0] == 'b':
+                    if x_pos + 1 < 8:
+                        tile = self.board[x_pos + 1][y_pos]
+                        tile.config(bg="#d11d3e")
+                        self.moveable_spots.add_selected_piece(tile, x + 1, y)
 
-                if x_pos == 1:
-                    tile = self.board[x_pos + 2][y_pos]
-                    tile.config(bg="#d11d3e")
-                    self.moveable_spots.add_selected_piece(tile, x + 2, y)
+                    if x_pos + 1 < 8 and y_pos + 1 < 8:
+                        tile = self.board[x_pos + 1][y_pos + 1]
+                        tile.config(bg="#d11d3e")
+                        self.moveable_spots.add_selected_piece(tile, x + 1, y + 1)
 
-            elif piece[0] == 'w':
-                if x_pos - 1 > 0:
-                    tile = self.board[x_pos - 1][y_pos]
-                    tile.config(bg="#d11d3e")
-                    self.moveable_spots.add_selected_piece(tile, x - 1, y)
+                    if x_pos + 1 < 8 and y_pos - 1 >= 0:
+                        tile = self.board[x_pos + 1][y_pos - 1]
+                        tile.config(bg="#d11d3e")
+                        self.moveable_spots.add_selected_piece(tile, x + 1, y - 1)
 
-                if x_pos == 6:
-                    tile = self.board[x_pos - 2][y_pos]
-                    tile.config(bg="#d11d3e")
-                    self.moveable_spots.add_selected_piece(tile, x - 2, y)
+                    if x_pos == 1:
+                        tile = self.board[x_pos + 2][y_pos]
+                        tile.config(bg="#d11d3e")
+                        self.moveable_spots.add_selected_piece(tile, x + 2, y)
+
+                elif piece[0] == 'w':
+                    if x_pos - 1 >= 0:
+                        tile = self.board[x_pos - 1][y_pos]
+                        tile.config(bg="#d11d3e")
+                        self.moveable_spots.add_selected_piece(tile, x - 1, y)
+
+                    if x_pos - 1 >= 0 and y_pos + 1 < 8:
+                        tile = self.board[x_pos - 1][y_pos + 1]
+                        tile.config(bg="#d11d3e")
+                        self.moveable_spots.add_selected_piece(tile, x - 1, y + 1)
+
+                    if x_pos - 1 >= 0 and y_pos - 1 >= 0:
+                        tile = self.board[x_pos - 1][y_pos - 1]
+                        tile.config(bg="#d11d3e")
+                        self.moveable_spots.add_selected_piece(tile, x - 1, y - 1)
+
+                    if x_pos == 6:
+                        tile = self.board[x_pos - 2][y_pos]
+                        tile.config(bg="#d11d3e")
+                        self.moveable_spots.add_selected_piece(tile, x - 2, y)
 
 root = Tk()
 root.title("Chess")
