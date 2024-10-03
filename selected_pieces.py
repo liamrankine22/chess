@@ -83,3 +83,18 @@ class SelectedPieces():
         :return: boolean value True or False
         """
         return self.head is None
+
+    def iterate(self, data):
+        """
+        Iterates over the linked list to check if specified data is in the list
+
+        :param data: data to be compared
+
+        :return: Node containing the data
+        """
+        current_node = self.head
+        while current_node is not None:
+            if current_node.data == data:
+                return current_node
+            current_node = current_node.next
+        return None
